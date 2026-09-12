@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inbox | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+
+    <div class="card" style="background:#dcfce7; color:#16a34a;" th:if="${success}">
+        <span th:text="${success}"></span>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <h1>Inbox</h1>
+            <div style="display:flex; gap:8px;">
+                <a th:href="@{/messages/send}" class="btn">+ Send Message</a>
+                <a th:href="@{/messages/broadcast}" class="btn btn-secondary">&#128226; Broadcast to All Employees</a>
+                <a th:href="@{/messages/sms-log}" class="btn" style="background:#64748b;">SMS Log</a>
+            </div>
+        </div>
+        <table>
+            <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Message</th><th>Sent At</th></tr></thead>
+            <tbody>
+            <tr th:each="m : ${messages}">
+                <td th:text="${m.sender}">Sender</td>
+                <td th:text="${m.recipient}">Recipient</td>
+                <td th:text="${m.subject}">Subject</td>
+                <td th:text="${m.body}">Body</td>
+                <td th:text="${m.sentAt}">Date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{fragments/chatbot :: chatbot}"></div>
+</body>
+</html>

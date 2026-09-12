@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>OTC Medicine Lookup | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <div class="card">
+        <h1>&#128337; OTC Medicine Lookup</h1>
+        <p style="color:#64748b;">Select patient age and symptom/disease category. This tool suggests the
+           top 3 basic (non-prescription) medicines as a <b>reference aid</b> for the pharmacist &mdash;
+           it does not replace professional judgement.</p>
+
+        <form th:action="@{/otc/results}" method="get" style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+            <div class="form-group" style="min-width:160px;">
+                <label>Patient Age</label>
+                <input type="number" name="age" min="0" max="120" th:value="${age}" required>
+            </div>
+            <div class="form-group" style="min-width:220px;">
+                <label>Symptom / Disease Category</label>
+                <select name="category" required>
+                    <option value="">-- select --</option>
+                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"
+                            th:selected="${c == category}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card" th:if="${searched}">
+        <h2>Top Suggestions for age <span th:text="${age}">0</span> &mdash; <span th:text="${category}">Category</span></h2>
+
+        <div th:if="${#lists.isEmpty(suggestions)}">
+            <p style="color:#dc2626;">No matching OTC medicines found for this age/category combination.</p>
+        </div>
+
+        <table th:unless="${#lists.isEmpty(suggestions)}">
+            <thead><tr><th>Rank</th><th>Medicine</th><th>Suitable Age Range</th><th>Dosage</th><th>Notes / Warnings</th></tr></thead>
+            <tbody>
+            <tr th:each="med, iter : ${suggestions}">
+                <td th:text="${iter.count}">1</td>
+                <td th:text="${med.name}">Medicine</td>
+                <td th:text="${med.minAge} + ' - ' + ${med.maxAge} + ' yrs'">0-0</td>
+                <td th:text="${med.dosage}">Dosage</td>
+                <td th:text="${med.notes}">Notes</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>Add OTC Medicine to Reference Database</h3>
+        <form th:action="@{/otc/save}" method="post" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div class="form-group"><label>Name</label><input type="text" name="name" required></div>
+            <div class="form-group"><label>Category</label><input type="text" name="category" required placeholder="e.g. Fever, Cold & Cough, Pain Relief, Allergy"></div>
+            <div class="form-group"><label>Min Age</label><input type="number" name="minAge" required></div>
+            <div class="form-group"><label>Max Age</label><input type="number" name="maxAge" required></div>
+            <div class="form-group" style="grid-column:span 2;"><label>Dosage</label><input type="text" name="dosage" required placeholder="e.g. 500mg every 6 hours"></div>
+            <div class="form-group" style="grid-column:span 2;"><label>Notes / Warnings</label><input type="text" name="notes"></div>
+            <div class="form-group"><label>Priority (1 = highest)</label><input type="number" name="priority" value="5"></div>
+            <div style="grid-column:span 2;"><button type="submit" class="btn">Add to OTC Database</button></div>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/chatbot :: chatbot}"></div>
+</body>
+</html>

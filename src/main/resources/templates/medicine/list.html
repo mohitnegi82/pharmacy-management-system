@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Medicines | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <div class="card">
+        <h1>Medicine Management</h1>
+        <form th:action="@{/medicines}" method="get" style="display:flex; gap:8px; margin-bottom:16px;">
+            <input type="text" name="q" th:value="${q}" placeholder="Search by name..." style="flex:1; padding:9px; border:1px solid #e2e8f0; border-radius:6px;">
+            <button class="btn" type="submit">Search</button>
+            <a th:href="@{/medicines/new}" class="btn btn-secondary">+ Add New Medicine</a>
+        </form>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th><th>Category</th><th>Manufacturer</th><th>Batch No</th>
+                <th>Expiry</th><th>Price</th><th>Qty</th><th>Status</th><th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="m : ${medicines}">
+                <td th:text="${m.name}">Name</td>
+                <td th:text="${m.category}">Category</td>
+                <td th:text="${m.manufacturer}">Manufacturer</td>
+                <td th:text="${m.batchNo}">Batch</td>
+                <td th:text="${m.expiryDate}">2026-01-01</td>
+                <td th:text="'₹' + ${m.price}">0</td>
+                <td th:text="${m.quantity}">0</td>
+                <td>
+                    <span th:if="${m.quantity <= m.reorderLevel}" class="badge badge-danger">Low Stock</span>
+                    <span th:unless="${m.quantity <= m.reorderLevel}" class="badge badge-success">OK</span>
+                </td>
+                <td>
+                    <a th:href="@{/medicines/{id}/edit(id=${m.id})}" class="btn" style="padding:5px 10px;font-size:12px;">Edit</a>
+                    <form th:action="@{/medicines/{id}/delete(id=${m.id})}" method="post" style="display:inline;"
+                          onsubmit="return confirm('Delete this medicine?');">
+                        <button type="submit" class="btn btn-danger" style="padding:5px 10px;font-size:12px;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{fragments/chatbot :: chatbot}"></div>
+</body>
+</html>

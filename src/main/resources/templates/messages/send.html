@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Send Message | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <div class="card" style="max-width:520px;">
+        <h1>Send Message</h1>
+        <form th:action="@{/messages/send}" th:object="${message}" method="post">
+            <div class="form-group">
+                <label>Recipient (username)</label>
+                <input type="text" th:field="*{recipient}" required>
+            </div>
+            <div class="form-group">
+                <label>Subject</label>
+                <input type="text" th:field="*{subject}" required>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea th:field="*{body}" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn">Send</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

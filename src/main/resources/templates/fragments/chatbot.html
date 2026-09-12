@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="chatbot">
+    <button id="chatbot-toggle" onclick="toggleChatbot()">&#128172;</button>
+    <div id="chatbot-window">
+        <div id="chatbot-header">PharmaCare Assistant</div>
+        <div id="chatbot-messages"></div>
+        <div id="chatbot-input-row">
+            <input id="chatbot-input" type="text" placeholder="Ask e.g. 'how to add medicine'"
+                   onkeydown="if(event.key==='Enter') sendChatMessage()">
+            <button id="chatbot-send" onclick="sendChatMessage()">&#10148;</button>
+        </div>
+    </div>
+    <script th:src="@{/js/chatbot.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        @media print { .navbar, .no-print { display:none; } }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}" class="no-print"></div>
+<div class="container">
+    <div class="card" id="invoice-box">
+        <div style="text-align:center; margin-bottom:20px;">
+            <h1 style="margin-bottom:0;">PharmaCare Pharmacy</h1>
+            <p style="color:#64748b; margin-top:4px;">Store ID: PHC-001 &nbsp;|&nbsp; INVOICE</p>
+        </div>
+
+        <p><b>Invoice No:</b> <span th:text="'INV-' + ${sale.id}">INV-1</span></p>
+        <p><b>Date:</b> <span th:text="${sale.saleDate}">2026-08-12</span></p>
+        <p><b>Customer:</b> <span th:text="${sale.customerName}">Customer</span>
+           <span th:if="${sale.customerPhone}" th:text="'(' + ${sale.customerPhone} + ')'"></span></p>
+        <p><b>Served By:</b> <span th:text="${sale.soldBy.fullName}">Pharmacist</span></p>
+
+        <table>
+            <thead><tr><th>Medicine</th><th>Qty</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
+            <tbody>
+            <tr th:each="item : ${sale.items}">
+                <td th:text="${item.medicine.name}">Med</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="'₹' + ${item.unitPrice}">0</td>
+                <td th:text="'₹' + ${item.quantity * item.unitPrice}">0</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2 style="text-align:right; margin-top:16px;">Total: ₹<span th:text="${sale.totalAmount}">0</span></h2>
+
+        <div class="no-print" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a th:href="@{/sales/{id}/invoice/pdf(id=${sale.id})}" class="btn">&#128190; Download PDF Bill</a>
+            <button onclick="window.print()" class="btn" style="background:#64748b;">&#128424;&#65039; Print</button>
+            <a th:href="@{/sales/checkout}" class="btn" style="background:#64748b;">New Sale</a>
+        </div>
+
+        <div class="no-print" style="margin-top:16px; border-top:1px solid #e2e8f0; padding-top:16px;">
+            <form th:action="@{/sales/{id}/invoice/send-sms(id=${sale.id})}" method="post" style="display:flex; gap:8px; max-width:420px;">
+                <input type="text" name="phone" placeholder="Customer phone number"
+                       th:value="${sale.customerPhone}" style="flex:1; padding:9px; border:1px solid #e2e8f0; border-radius:6px;" required>
+                <button type="submit" class="btn btn-secondary">Send Bill via SMS</button>
+            </form>
+            <p style="font-size:12px; color:#64748b; margin-top:6px;">
+                SMS sending is simulated for this demo &mdash; check the Messages &rarr; SMS Log page to see it recorded.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h1>Welcome, <span th:text="${username}">Pharmacist</span> &#128075;</h1>
+    <p style="color:#64748b;">Main Menu &mdash; choose a module to continue.</p>
+
+    <div class="dashboard-grid">
+        <a th:href="@{/medicines}" class="dashboard-tile">
+            <span class="icon">&#128137;</span>
+            <h3>Medicine Management</h3>
+            <p>List, search, add, update, delete medicines</p>
+        </a>
+        <a th:href="@{/suppliers}" class="dashboard-tile">
+            <span class="icon">&#128666;</span>
+            <h3>Supplier Management</h3>
+            <p>List, add, delete suppliers</p>
+        </a>
+        <a th:href="@{/purchases/new}" class="dashboard-tile">
+            <span class="icon">&#128230;</span>
+            <h3>Record Purchase</h3>
+            <p>Stock in from a supplier</p>
+        </a>
+        <a th:href="@{/sales/checkout}" class="dashboard-tile">
+            <span class="icon">&#128181;</span>
+            <h3>Record Sale (Checkout)</h3>
+            <p>Sell medicines, generate invoice</p>
+        </a>
+        <a th:href="@{/otc}" class="dashboard-tile otc-tile">
+            <span class="icon">&#128337;</span>
+            <h3>OTC Medicine Lookup</h3>
+            <p>Age + symptom &rarr; top 3 suggested OTC medicines</p>
+        </a>
+        <a th:href="@{/messages}" class="dashboard-tile">
+            <span class="icon">&#9993;&#65039;</span>
+            <h3>Messages</h3>
+            <p>Inbox and internal messaging</p>
+        </a>
+        <a th:href="@{/reports}" class="dashboard-tile">
+            <span class="icon">&#128202;</span>
+            <h3>Reports</h3>
+            <p>Stock, low stock, expiry, today's sales</p>
+        </a>
+        <a th:href="@{/employees}" class="dashboard-tile" sec:authorize="hasRole('ADMIN')">
+            <span class="icon">&#128101;</span>
+            <h3>Employee Management</h3>
+            <p>Admin only</p>
+        </a>
+    </div>
+</div>
+
+<div th:replace="~{fragments/chatbot :: chatbot}"></div>
+</body>
+</html>

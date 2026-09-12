@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SMS Log | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <div class="card">
+        <h1>Simulated SMS Log</h1>
+        <p style="color:#64748b;">Every SMS the system "sent" (invoice bills + employee broadcasts) is
+           recorded here for demo purposes, since no real SMS provider (e.g. Twilio) is connected.</p>
+        <table>
+            <thead><tr><th>To</th><th>Purpose</th><th>Message</th><th>Sent At</th></tr></thead>
+            <tbody>
+            <tr th:each="log : ${smsLogs}">
+                <td th:text="${log.toPhone}">Phone</td>
+                <td><span class="badge badge-success" th:text="${log.purpose}">Purpose</span></td>
+                <td th:text="${log.message}">Message</td>
+                <td th:text="${log.sentAt}">Date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{fragments/chatbot :: chatbot}"></div>
+</body>
+</html>

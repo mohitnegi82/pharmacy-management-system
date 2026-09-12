@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+
+    <div class="card">
+        <h2>Today's Sales &amp; Earnings</h2>
+        <p style="font-size:22px; font-weight:700; color:#0f766e;">₹<span th:text="${todaysEarnings}">0</span></p>
+        <table>
+            <thead><tr><th>Invoice</th><th>Customer</th><th>Time</th><th>Total</th></tr></thead>
+            <tbody>
+            <tr th:each="s : ${todaysSales}">
+                <td th:text="'INV-' + ${s.id}">INV</td>
+                <td th:text="${s.customerName}">Customer</td>
+                <td th:text="${s.saleDate}">Time</td>
+                <td th:text="'₹' + ${s.totalAmount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Purchase History (Stock In)</h2>
+        <p style="font-size:16px; font-weight:700; color:#0f766e;">Total Spend: ₹<span th:text="${totalPurchaseSpend}">0</span></p>
+        <table>
+            <thead><tr><th>Purchase ID</th><th>Supplier</th><th>Date</th><th>Items</th><th>Total</th></tr></thead>
+            <tbody>
+            <tr th:each="p : ${purchaseHistory}">
+                <td th:text="'PUR-' + ${p.id}">PUR</td>
+                <td th:text="${p.supplier.name}">Supplier</td>
+                <td th:text="${p.purchaseDate}">Date</td>
+                <td th:text="${p.items.size()} + ' item(s)'">0 items</td>
+                <td th:text="'₹' + ${p.totalAmount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Low Stock Report</h2>
+        <table>
+            <thead><tr><th>Medicine</th><th>Quantity</th><th>Reorder Level</th></tr></thead>
+            <tbody>
+            <tr th:each="m : ${lowStock}">
+                <td th:text="${m.name}">Med</td>
+                <td th:text="${m.quantity}">0</td>
+                <td th:text="${m.reorderLevel}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Expiry Report (Next 30 Days)</h2>
+        <table>
+            <thead><tr><th>Medicine</th><th>Batch No</th><th>Expiry Date</th></tr></thead>
+            <tbody>
+            <tr th:each="m : ${expiring}">
+                <td th:text="${m.name}">Med</td>
+                <td th:text="${m.batchNo}">Batch</td>
+                <td th:text="${m.expiryDate}">Date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Full Stock Summary</h2>
+        <table>
+            <thead><tr><th>Medicine</th><th>Category</th><th>Quantity</th><th>Price</th></tr></thead>
+            <tbody>
+            <tr th:each="m : ${stockSummary}">
+                <td th:text="${m.name}">Med</td>
+                <td th:text="${m.category}">Cat</td>
+                <td th:text="${m.quantity}">0</td>
+                <td th:text="'₹' + ${m.price}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div th:replace="~{fragments/chatbot :: chatbot}"></div>
+</body>
+</html>

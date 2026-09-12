@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Broadcast Message | PharmaCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <div class="card" style="max-width:560px;">
+        <h1>&#128226; Broadcast to All Employees</h1>
+        <p style="color:#64748b;">This sends a (simulated) SMS to every <b>active</b> employee's phone number
+           on file, and logs a copy of the message in the app. No real SMS provider is connected for this
+           demo &mdash; check <a th:href="@{/messages/sms-log}">SMS Log</a> afterward to see it recorded.</p>
+
+        <form th:action="@{/messages/broadcast}" method="post">
+            <div class="form-group">
+                <label>Subject</label>
+                <input type="text" name="subject" required placeholder="e.g. Shift Change Notice">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea name="body" rows="5" required placeholder="e.g. Tomorrow's morning shift starts at 8 AM instead of 9 AM."></textarea>
+            </div>
+            <button type="submit" class="btn">Send to All Active Employees</button>
+            <a th:href="@{/messages}" class="btn" style="background:#64748b;">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
